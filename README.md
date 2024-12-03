@@ -1,1 +1,1 @@
-Based on Face Recognition 
+Based on Face Recognition and Identify Patterns 
