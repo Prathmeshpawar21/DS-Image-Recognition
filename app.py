@@ -2,6 +2,9 @@ from flask import Flask, render_template, Response
 import cv2
 from keras.models import model_from_json
 import numpy as np
+import gunicorn
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 app = Flask(__name__)
 
@@ -22,7 +25,7 @@ gender_net = cv2.dnn.readNetFromCaffe("./savedModel/gender_deploy.prototxt", "./
 # Age and gender labels
 age_ranges = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
 gender_labels = ['Male', 'Female']
-
+``
 def find_working_webcam():
     """Attempt to find a working webcam by checking indices 0 to 5."""
     for i in range(5):  # Check first 5 possible webcam indices
