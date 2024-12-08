@@ -3,28 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Expression Detection</title>
+    <title>Emotion, Gender, and Age Detection</title>
+    <link rel="stylesheet" href="static/style.css">
     <style>
         body {
             text-align: center;
-        }
-        video {
-            width: 80%;
-            border: 2px solid #ddd;
+            font-family: Arial, sans-serif;
         }
         h1 {
             margin-top: 20px;
+            color: #333;
+        }
+        img {
+            width: 77%;
+            border-radius: 25px;
+            box-shadow: 0 0px 20px rgb(81 81 81)
         }
     </style>
 </head>
 <body>
-    <h1>Face Expression Detection</h1>
-
-    <div>
-        <img src="{{ url_for('video_feed') }}" width="50%" />
-    </div>
-    
-    <script src="../static/"></script>
-    
+    <h1 class="titleClass">Real-time Face-Emotion, Gender & Age Detection</h1>
+    <img src="{{ url_for('video_feed') }}" alt="Video Feed">
 </body>
 </html>
