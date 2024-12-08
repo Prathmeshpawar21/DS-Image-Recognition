@@ -4,8 +4,6 @@ from keras.models import model_from_json
 import numpy as np
 import gunicorn
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-
 app = Flask(__name__)
 
 # Load the emotion detection model
