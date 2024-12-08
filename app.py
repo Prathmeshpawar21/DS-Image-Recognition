@@ -1,8 +1,7 @@
 from flask import Flask, render_template, Response
 import cv2
-from keras.models import model_from_json
+from tensorflow.keras.models import model_from_json
 import numpy as np
-import gunicorn
 import os
 app = Flask(__name__)
 
