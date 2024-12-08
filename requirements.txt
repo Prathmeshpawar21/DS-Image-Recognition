@@ -1,3 +1,12 @@
+google-auth-oauthlib
+tensorboard
+tensorboard-data-server
+tensorboard-plugin-wit
+tensorflow
+tensorflow-estimator
+tensorflow-io-gcs-filesystem
+termcolor
+tqdm
 absl-py==2.1.0
 astunparse==1.6.3
 beautifulsoup4==4.12.3
@@ -15,7 +24,6 @@ flatbuffers==24.3.25
 gast==0.4.0
 gdown==5.2.0
 google-auth==2.36.0
-google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 grpcio==1.68.1
 gunicorn==23.0.0
@@ -52,14 +60,6 @@ retina-face==0.0.17
 rsa==4.9
 six==1.17.0
 soupsieve==2.6
-tensorboard
-tensorboard-data-server
-tensorboard-plugin-wit
-tensorflow
-tensorflow-estimator
-tensorflow-io-gcs-filesystem
-termcolor
-tqdm
 typing_extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
