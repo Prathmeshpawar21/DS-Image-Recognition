@@ -1,3 +1,5 @@
+google-pasta
+google-auth
 google-auth-oauthlib
 tensorboard
 tensorboard-data-server
@@ -6,9 +8,10 @@ tensorflow
 tensorflow-estimator
 tensorflow-io-gcs-filesystem
 termcolor
+astunparse
 tqdm
+keras
 absl-py==2.1.0
-astunparse==1.6.3
 beautifulsoup4==4.12.3
 blinker==1.9.0
 cachetools==5.5.0
@@ -23,8 +26,6 @@ Flask-Cors==5.0.0
 flatbuffers==24.3.25
 gast==0.4.0
 gdown==5.2.0
-google-auth==2.36.0
-google-pasta==0.2.0
 grpcio==1.68.1
 gunicorn==23.0.0
 h5py==3.12.1
@@ -33,7 +34,6 @@ imutils==0.5.4
 itsdangerous==2.2.0
 Jinja2==3.1.4
 joblib==1.4.2
-keras
 Keras-Preprocessing==1.1.2
 libclang==18.1.1
 lz4==4.3.3
