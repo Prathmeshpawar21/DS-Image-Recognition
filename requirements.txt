@@ -1,3 +1,4 @@
+python_version=="3.10.15"
 absl-py==2.1.0
 astunparse==1.6.3
 cachetools==5.5.0
@@ -20,7 +21,7 @@ MarkupSafe==3.0.2
 mdurl==0.1.2
 ml-dtypes==0.4.1
 namex==0.0.8
-numpy==2.0.2
+numpy>=1.20.0,<1.24.0
 oauthlib==3.2.2
 opt_einsum==3.4.0
 optree==0.13.1
