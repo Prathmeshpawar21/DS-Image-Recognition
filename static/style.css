@@ -1,19 +1,19 @@
-*{
-    /* background-color: #1c0e20; */
-}
 
 .titleClass{
     background-color: rgb(255, 255, 255);
     padding: 11px;
     border-radius: 30px;
     box-shadow: 0 0px 20px 0px rgb(0 0 0 / 73%);
+    align-items: center;
+    text-align: center;
+
 }
 
 /* Container for video and labels */
 .video-container {
     position: relative;
-    width: 640px;
-    height: 480px;
+    width: 70%;
+    height: 50%;
     overflow: hidden;
 }
 
