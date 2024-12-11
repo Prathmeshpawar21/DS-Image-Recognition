@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow.keras.models import model_from_json
 import logging
 import os
+import gc  # Garbage collector
 
 app = Flask(__name__)
 
@@ -83,6 +84,9 @@ def process_frame(frame):
     except Exception as e:
         logging.error(f"Error processing frame: {e}")
         return None
+    finally:
+        # Release memory using garbage collector
+        gc.collect()
 
 @app.route('/')
 def index():
@@ -115,9 +119,13 @@ def process_image():
     except Exception as e:
         logging.error(f"Error processing image: {e}")
         return jsonify({'error': 'Internal server error'}), 500
+    finally:
+        # Release memory using garbage collector
+        gc.collect()
 
 if __name__ == '__main__':
     try:
-        app.run(host='0.0.0.0', port=5000)
+        app.run(host='0.0.0.0', port=8000)  # for gunicorn deployment purpose
+        # app.run(host='0.0.0.0', port=5000)  # for Localhost
     except Exception as e:
         logging.error(f"Error running app: {e}")
