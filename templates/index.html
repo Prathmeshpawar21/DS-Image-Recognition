@@ -1,132 +1,56 @@
- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Emotion, Gender, and Age Detection</title>
-    <link rel="shortcut icon" href="./static/logo.png" type="">
-    <link rel="stylesheet" href="static/style.css">
-
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            margin-top: 20px;
-            color: #333;
-        }
-        img {
-            width: 77%;
-            border-radius: 25px;
-            box-shadow: 0 0px 20px rgb(81 81 81)
-        }
-    </style>
-</head>
-<body>
-    <h1 class="titleClass">Real-time Face-Emotion, Gender & Age Detection</h1>
-    <img src="{{ url_for('video_feed') }}" alt="Video Feed">
-</body>
-</html>
-
-<!-- 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion, Gender, and Age Detection</title>
-    <link rel="shortcut icon" href="./static/logo.png" type="">
-    <link rel="stylesheet" href="static/style.css">
-
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            margin-top: 20px;
-            color: #333;
-        }
-        video {
-            border-radius: 25px;
-            box-shadow: 0 0px 20px rgb(81 81 81);
-            width: 77%;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-    </style>
+    <title>Webcam Capture</title>
 </head>
 <body>
-    <h1 class="titleClass">Real-time Face-Emotion, Gender & Age Detection</h1>
-    <video id="webcam" width="640" height="480" autoplay></video>
+    <video id="video" width="640" height="480" autoplay></video>
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    <div id="predictions"></div>
+    <img id="processedImage" src="" alt="Processed Image" style="display:none;">
 
     <script>
-        // Access webcam
-        const videoElement = document.getElementById('webcam');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-
+        // Access the webcam
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function(stream) {
-                videoElement.srcObject = stream;
+                document.getElementById('video').srcObject = stream;
             })
             .catch(function(err) {
-                console.log("Error accessing webcam: " + err);
+                console.log("An error occurred: " + err);
             });
 
-        // Function to capture frame from webcam and send to Flask server
-        function sendFrameToServer() {
-            // Draw the current video frame to the canvas
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        // Capture frames and send to the server
+        setInterval(function() {
+            var video = document.getElementById('video');
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
 
-            // Convert the canvas to a base64 image
-            const frameData = canvas.toDataURL('image/jpeg');
+            // Draw the current video frame onto the canvas
+            context.drawImage(video, 0, 0, 640, 480);
 
-            // Send the image to the server
-            fetch('/process_frame', {
+            // Convert the canvas content to a base64 image
+            var dataURL = canvas.toDataURL('image/jpeg', 0.5);
+
+            // Send the base64 image to the server
+            fetch('/process_image', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ image: frameData })
+                body: JSON.stringify({ image: dataURL })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Frame processed:', data);
-
-                // Clear the canvas for drawing bounding boxes and text
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Loop through each detected face and draw predictions
-                data.forEach(result => {
-                    const { emotion, gender, age, face_coords } = result;
-                    const [x, y, w, h] = face_coords;
-
-                    // Draw bounding box
-                    ctx.strokeStyle = "green";
-                    ctx.lineWidth = 2;
-                    ctx.strokeRect(x, y, w, h);
-
-                    // Draw the emotion, gender, and age labels
-                    ctx.fillStyle = "red";
-                    ctx.font = "20px Arial";
-                    ctx.fillText(`Emotion: ${emotion}`, x, y - 10);
-                    ctx.fillText(`Gender: ${gender}`, x, y + h + 10);
-                    ctx.fillText(`Age: ${age}`, x, y + h + 30);
-                });
+                if (data.processed_image) {
+                    // Display the processed image
+                    document.getElementById('processedImage').src = 'data:image/jpeg;base64,' + data.processed_image;
+                    document.getElementById('processedImage').style.display = 'block';
+                } else if (data.error) {
+                    console.error('Error:', data.error);
+                }
             })
-            .catch(error => console.error('Error sending frame:', error));
-        }
-
-        // Continuously capture and send frames every 100ms
-        setInterval(sendFrameToServer, 100);
+            .catch(error => console.error('Error:', error));
+        }, 50); // Send a frame every 1 second
     </script>
 </body>
-</html> -->
+</html>
