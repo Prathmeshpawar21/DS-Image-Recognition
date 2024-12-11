@@ -5,14 +5,14 @@ import numpy as np
 from tensorflow.keras.models import model_from_json
 import logging
 import os
-import gc  # Garbage collector
+import gc  
 
 app = Flask(__name__)
 
-# Configure logging
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Load models
+# Model Loading All
 def load_emotion_model():
     try:
         json_file = open("notebook/emothionDetectorGPU.json", "r")
@@ -36,11 +36,11 @@ def load_dnn_models():
         logging.error(f"Error loading DNN models: {e}")
         raise
 
-# Load models
+# Model Loadded 
 emotion_model = load_emotion_model()
 age_net, gender_net = load_dnn_models()
 
-# Define labels and Haar cascade
+# labels and Haar cascade 
 emotion_labels = {0: 'Angry', 1: 'Disgust', 2: 'Fear', 3: 'Happy', 4: 'Neutral', 5: 'Sad', 6: 'Surprise'}
 age_ranges = ['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
 gender_labels = ['Male', 'Female']
@@ -85,7 +85,7 @@ def process_frame(frame):
         logging.error(f"Error processing frame: {e}")
         return None
     finally:
-        # Release memory using garbage collector
+        # issue with openCV Solved for Hosting Project
         gc.collect()
 
 @app.route('/')
@@ -95,7 +95,7 @@ def index():
 @app.route('/process_image', methods=['POST'])
 def process_image():
     try:
-        # Get the base64 image from the request
+        # Getting base64 image from the request
         data = request.json
         dataURL = data.get('image')
         if not dataURL:
@@ -108,7 +108,7 @@ def process_image():
         if img is None:
             return jsonify({'error': 'Failed to decode image'}), 400
 
-        # Process the image
+        # img processing 
         processed_image = process_frame(img)
         if processed_image is not None:
             # Encode the processed image back to base64
@@ -120,12 +120,12 @@ def process_image():
         logging.error(f"Error processing image: {e}")
         return jsonify({'error': 'Internal server error'}), 500
     finally:
-        # Release memory using garbage collector
+        # issue with openCV Solved for Hosting Project - Memory leckage Problem in RAM 
         gc.collect()
 
 if __name__ == '__main__':
     try:
-        app.run(host='0.0.0.0', port=8000)  # for gunicorn deployment purpose
-        # app.run(host='0.0.0.0', port=5000)  # for Localhost
+        # app.run(host='0.0.0.0', port=8000)  # for gunicorn deployment purpose
+        app.run(debug=True , host='0.0.0.0', port=5000)  # for Localhost
     except Exception as e:
         logging.error(f"Error running app: {e}")

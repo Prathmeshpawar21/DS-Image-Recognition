@@ -1,56 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Webcam Capture</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Emotion Track</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}" />
+    <link rel="stylesheet"  href="{{ url_for('static', filename='style.css') }}" />
+
 </head>
+
+
 <body>
-    <video id="video" width="640" height="480" autoplay></video>
+    <h1 class="titleClass">Real-time Face-Emotion, Gender & Age Detection</h1>
+
+
+    <video id="video" width="640" height="480" autoplay style="display:none;" ></video>
     <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
-    <div id="predictions"></div>
-    <img id="processedImage" src="" alt="Processed Image" style="display:none;">
 
-    <script>
-        // Access the webcam
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                document.getElementById('video').srcObject = stream;
-            })
-            .catch(function(err) {
-                console.log("An error occurred: " + err);
-            });
+    <div class="predictionCamara">
 
-        // Capture frames and send to the server
-        setInterval(function() {
-            var video = document.getElementById('video');
-            var canvas = document.getElementById('canvas');
-            var context = canvas.getContext('2d');
+        <div id="predictions"></div>
+        <img id="processedImage" src="" alt="Processed Image" style="display:none;">
+    </div>
 
-            // Draw the current video frame onto the canvas
-            context.drawImage(video, 0, 0, 640, 480);
 
-            // Convert the canvas content to a base64 image
-            var dataURL = canvas.toDataURL('image/jpeg', 0.5);
-
-            // Send the base64 image to the server
-            fetch('/process_image', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ image: dataURL })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.processed_image) {
-                    // Display the processed image
-                    document.getElementById('processedImage').src = 'data:image/jpeg;base64,' + data.processed_image;
-                    document.getElementById('processedImage').style.display = 'block';
-                } else if (data.error) {
-                    console.error('Error:', data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }, 100); // Send a frame every 1 second
-    </script>
-</body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
 </html>
